@@ -29,8 +29,9 @@ sub new {
     return $self;
 }
 
-sub title   { shift->{title}   }
-sub tagline { shift->{tagline} }
+sub title       { shift->{title}     }
+sub tagline     { shift->{tagline}   }
+sub data_path   { shift->{data_path} }
 
 sub update  {
     my $self = shift;
@@ -39,8 +40,23 @@ sub update  {
 }
 
 sub create_post {
-    my $self = shift;
+    my ($self, %opts) = @_;
+    for (qw/body title body_format/) {
+        die "$_ is missing in Chalice::Model::JSONFIle->create_post"
+            unless exists $opts{$_};
+    }
+    my $url = $opts{url} || $self->url_from_title($opts{title});
+    $self->validate_url($url);
+}
 
+sub validate_url {
+    my ($self, $url) = @_;
+    die "URLs containg '..' are forebidden"
+        if $url =~ /\.\./;
+    die "Absolute URLs are forebidden"
+        if $url =~ q{^/};
+    die "Invalid characters in URL (allowed are a-z, A-Z, _, -, /)"
+        if $url !~ q{^[a-zA-Z0-9_/-]+$};
 }
 
 1;
