@@ -19,12 +19,18 @@ sub new {
         $json->decode($contents);
     };
     return bless {
-        title   => $conf->{title},
-        tagline => $conf->{tagline},
+        title           => $conf->{title},
+        tagline         => $conf->{tagline},
+        config_filename => $config_file,
     }, $class;
 }
 
 sub title   { shift->{title}   }
 sub tagline { shift->{tagline} }
 
+sub update  {
+    my $self = shift;
+    my $filename = $self->{config_filename};
+    die "Updating of blog data not yet implemented in JSONFile -- please edit file '$filename' instead";
+}
 1;
