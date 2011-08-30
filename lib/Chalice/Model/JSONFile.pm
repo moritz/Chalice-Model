@@ -47,6 +47,8 @@ sub create_post {
     }
     my $url = $opts{url} || $self->url_from_title($opts{title});
     $self->validate_url($url);
+
+    1;
 }
 
 sub validate_url {
@@ -57,6 +59,15 @@ sub validate_url {
         if $url =~ q{^/};
     die "Invalid characters in URL (allowed are a-z, A-Z, _, -, /)"
         if $url !~ q{^[a-zA-Z0-9_/-]+$};
+}
+
+sub url_from_title {
+    my ($self, $title) = @_;
+    $title =~ s{[^a-zA-Z0-9_/-]+}{-}g;
+    $title =~ s/-{2,}/-/g;
+    $title = substr($title, 0, 25);
+    my $year = (localtime)[5] + 1900;
+    return "$year/$title";
 }
 
 1;
