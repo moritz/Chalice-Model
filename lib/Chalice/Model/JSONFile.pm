@@ -70,4 +70,9 @@ sub url_from_title {
     return "$year/$title";
 }
 
+sub url_to_filename {
+    my ($self, $url) = @_;
+    return $self->data_path . '/' . $url . '.json';
+}
+
 1;
