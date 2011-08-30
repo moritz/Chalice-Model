@@ -1,0 +1,30 @@
+package Chalice::Model::JSONFile;
+use strict;
+use warnings;
+use Mojo::JSON;
+
+my $json = Mojo::JSON->new;
+
+sub new {
+    my ($class, %opts) = @_;
+    my $config_file = delete $opts{config_file};
+    unless (defined $config_file) {
+        die "Option 'config_file' is mandatory in the Chalice::Model::JSONFIle backend";
+    }
+    my $conf = do {
+        open my $fh, '<', $config_file
+            or die "Cannot open config file '$config_file' for reading: $!";
+        my $contents = do { local $/; <$fh> };
+        close $fh or die "Error while closing config file '$config_file': $!";
+        $json->decode($contents);
+    };
+    return bless {
+        title   => $conf->{title},
+        tagline => $conf->{tagline},
+    }, $class;
+}
+
+sub title   { shift->{title}   }
+sub tagline { shift->{tagline} }
+
+1;
