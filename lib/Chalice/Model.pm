@@ -1,6 +1,6 @@
 package Chalice::Model;
 
-use 5.008002;
+use 5.010;
 use strict;
 use warnings;
 

@@ -25,7 +25,7 @@ sub new {
         $self->{$_} = $conf->{$_};
     }
     $self->{data_path} = $conf->{data_path}
-                         || File::Basename::dirname($self->{config_filename});
+                         // File::Basename::dirname($self->{config_filename});
 
     return $self;
 }
@@ -46,7 +46,7 @@ sub create_post {
         die "$_ is missing in Chalice::Model::JSONFIle->create_post"
             unless exists $opts{$_};
     }
-    my $url = $opts{url} || $self->url_from_title($opts{title});
+    my $url = $opts{url} // $self->url_from_title($opts{title});
     $self->validate_url($url);
     my %post_data = (
         title           => $opts{title},

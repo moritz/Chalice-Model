@@ -36,6 +36,7 @@ sub delete {
     my $self = shift;
     my $filename = $self->{filename};
     unlink $filename or die "Cannot delete '$filename': $!";
+    $self;
 }
 
 1;

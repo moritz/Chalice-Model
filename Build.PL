@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use Module::Build;
-use 5.008002;
+use 5.010;
 
 my $build = Module::Build->new(
     create_readme      => 0,
