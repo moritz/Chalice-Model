@@ -20,7 +20,7 @@ sub _namespace {
     my $n = ucfirst shift;
     my $namespace = "Chalice::Model::Renderer::$n";
     eval "use $namespace; 1"
-        or die "Cannot load $namespace for rendering: $!";
+        or die "Cannot load $namespace for rendering: $@";
     $namespace;
 
 }
