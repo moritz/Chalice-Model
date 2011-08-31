@@ -16,3 +16,5 @@ sub render {
     }
     return join "\n", map "<p>$_</p>\n", @paragraphs;
 }
+
+1;
