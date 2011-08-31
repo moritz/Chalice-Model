@@ -13,6 +13,7 @@ sub new {
 sub title       { $_[0]->{title}        }
 sub url         { $_[0]->{url}          }
 sub body_source { $_[0]->{body_source}  }
+sub body_format { $_[0]->{body_format}  }
 
 sub write {
     my $self = shift;
@@ -37,6 +38,13 @@ sub delete {
     my $filename = $self->{filename};
     unlink $filename or die "Cannot delete '$filename': $!";
     $self;
+}
+
+sub body_rendered {
+    my $self = shift;
+    require Chalice::Model::Renderer;
+    # TODO: add caching here
+    Chalice::Model::Renderer->render($self->body_format, $self->body_source);
 }
 
 1;
