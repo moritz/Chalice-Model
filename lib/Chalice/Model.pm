@@ -33,10 +33,10 @@ our $VERSION = '0.01';
     my $post  = $model->post_by_url('2011/fancy-url-here');
     my @list  = $model->list_by_url('2011/');
     if ($post) {
-        say $post->title->rendered;
+        say $post->title_rendered;
         say "by ", $post->author, " on ", $post->creation_date;
         say  '';
-        say $post->body->rendered;
+        say $post->body_rendered;
     }
 
 =head1 DESCRIPTION

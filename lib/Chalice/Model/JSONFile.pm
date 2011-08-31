@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use Mojo::JSON;
 use File::Basename ();
+use Chalice::Model::JSONFile::Post;
 
 my $json = Mojo::JSON->new;
 
@@ -47,8 +48,22 @@ sub create_post {
     }
     my $url = $opts{url} || $self->url_from_title($opts{title});
     $self->validate_url($url);
+    my %post_data = (
+        title           => $opts{title},
+        body_source     => $opts{body},
+        body_format     => $opts{body_format},
+        created         => scalar(localtime),
+        last_modified   => scalar(localtime),
+        url             => $url,
+        filename        => $self->url_to_filename($url),
+    );
+    $post_data{author} = $opts{author} if exists $opts{author};
+    my $post = Chalice::Model::JSONFile::Post->new(
+        %post_data
+    );
+    $post->write;
 
-    1;
+    return $post;
 }
 
 sub validate_url {
@@ -72,7 +87,7 @@ sub url_from_title {
 
 sub url_to_filename {
     my ($self, $url) = @_;
-    return $self->data_path . '/' . $url . '.json';
+    return $self->data_path . '/posts/' . $url . '.json';
 }
 
 1;
