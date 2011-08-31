@@ -90,4 +90,16 @@ sub url_to_filename {
     return $self->data_path . '/posts/' . $url . '.json';
 }
 
+sub post_by_url {
+    my ($self, $url) = @_;
+    return unless eval { $self->validate_url($url); 1 };
+    my $filename = $self->url_to_filename($url);
+    return unless -e $filename;
+    open my $fh, '<', $filename
+        or die "Cannot open '$filename' for reading a blog post from it: $!";
+    my $data = $json->decode(do { local $/; <$fh> });
+    $data->{filename} = $filename;
+    bless $data, 'Chalice::Model::JSONFile::Post';
+}
+
 1;
