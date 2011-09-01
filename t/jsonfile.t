@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 16;
+use Test::More tests => 17;
 use lib 'lib';
 use Chalice::Model;
 
@@ -48,4 +48,6 @@ $m->create_post(title => 3, body => 13, body_format => 'rawhtml');
 is scalar(@posts), 3, 'Four posts';
 is join(', ', map $_->title, @posts), '3, 2, 1',
     'got posts in order';
+is join(', ', map $_->title, $m->newest_posts(2)), '3, 2',
+    'limiting number of posts works';
 
