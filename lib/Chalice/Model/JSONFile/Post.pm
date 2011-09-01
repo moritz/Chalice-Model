@@ -53,7 +53,7 @@ sub write {
     }
     open my $fh, '>', $filename
         or die "Cannot open '$filename' for storing a blog post in it: $!";
-    printf { $fh } Mojo::JSON->new->encode(\%self_copy)
+    print { $fh } Mojo::JSON->new->encode(\%self_copy)
         or die "Cannot write post data to '$filename': $!";
     print  { $fh } "\n";
     close $fh
