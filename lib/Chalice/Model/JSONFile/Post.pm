@@ -10,6 +10,15 @@ sub new {
     bless \%opts, $class;
 }
 
+sub new_from_file {
+    my ($class, $filename) = @_;
+    open my $fh, '<', $filename
+        or die "Cannot open '$filename' for reading a blog post from it: $!";
+    my $data = Mojo::JSON->new->decode(do { local $/; <$fh> });
+    $data->{filename} = $filename;
+    bless $data, $class;
+}
+
 sub title       { $_[0]->{title}        }
 sub url         { $_[0]->{url}          }
 sub body_source { $_[0]->{body_source}  }
@@ -46,5 +55,7 @@ sub body_rendered {
     # TODO: add caching here
     Chalice::Model::Renderer->render($self->body_format, $self->body_source);
 }
+
+sub creation_date { $_[0]->{creation_date} };
 
 1;

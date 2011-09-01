@@ -4,6 +4,8 @@ use warnings;
 use Mojo::JSON;
 use File::Basename ();
 use Chalice::Model::JSONFile::Post;
+use List::Util qw/min/;
+use 5.010;
 
 my $json = Mojo::JSON->new;
 
@@ -52,8 +54,8 @@ sub create_post {
         title           => $opts{title},
         body_source     => $opts{body},
         body_format     => $opts{body_format},
-        created         => scalar(localtime),
-        last_modified   => scalar(localtime),
+        creation_date   => scalar(localtime),
+        modification_date   => scalar(localtime),
         url             => $url,
         filename        => $self->url_to_filename($url),
     );
@@ -95,11 +97,22 @@ sub post_by_url {
     return unless eval { $self->validate_url($url); 1 };
     my $filename = $self->url_to_filename($url);
     return unless -e $filename;
-    open my $fh, '<', $filename
-        or die "Cannot open '$filename' for reading a blog post from it: $!";
-    my $data = $json->decode(do { local $/; <$fh> });
-    $data->{filename} = $filename;
-    bless $data, 'Chalice::Model::JSONFile::Post';
+    Chalice::Model::JSONFile::Post->new_from_file($filename);
+}
+
+sub newest_posts {
+    # XXX horribly inefficient for such a common operation,
+    # desparatly needs some caching
+    my $self  = shift;
+    my $count = shift // 10;
+    my $p     = $self->data_path;
+    my @post_files = grep -e, glob "$p/posts/*/*.json";
+    my @posts  = map Chalice::Model::JSONFile::Post->new_from_file($_),
+                     @post_files;
+    @posts = reverse sort { $a->creation_date <=> $b->create_post }
+                          @posts;
+    my $max_idx = min $#posts, $count - 1;
+    return @posts[0..$max_idx];
 }
 
 1;

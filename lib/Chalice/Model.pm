@@ -20,7 +20,7 @@ our $VERSION = '0.01';
 =head1 SYNOPSIS
 
     use Chalice::Model;
-    use 5.010; # just for say();
+    use 5.010; # Chalice::Model needs it anyway
 
     my $model = Chalice::Model->new(
         backend => 'SQL',
@@ -31,7 +31,7 @@ our $VERSION = '0.01';
 
     say $model->title, " " x 4, $model->tagline;
     my $post  = $model->post_by_url('2011/fancy-url-here');
-    my @list  = $model->list_by_url('2011/');
+    my @list  = $model->newest_posts(10);
     if ($post) {
         say $post->title_rendered;
         say "by ", $post->author, " on ", $post->creation_date;
