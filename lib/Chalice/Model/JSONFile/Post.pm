@@ -34,10 +34,12 @@ sub _timestamp {
     $self;
 }
 
-sub title       { $_[0]->{title}        }
-sub url         { $_[0]->{url}          }
-sub body_source { $_[0]->{body_source}  }
-sub body_format { $_[0]->{body_format}  }
+sub title               { $_[0]->{title}             }
+sub url                 { $_[0]->{url}               }
+sub body_source         { $_[0]->{body_source}       }
+sub body_format         { $_[0]->{body_format}       }
+sub creation_date       { $_[0]->{creation_date}     }
+sub modification_date   { $_[0]->{modification_date} }
 
 sub write {
     my $self = shift;
@@ -71,6 +73,5 @@ sub body_rendered {
     Chalice::Model::Renderer->render($self->body_format, $self->body_source);
 }
 
-sub creation_date { $_[0]->{creation_date} };
 
 1;
