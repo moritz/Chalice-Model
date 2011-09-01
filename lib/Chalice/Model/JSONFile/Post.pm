@@ -5,9 +5,16 @@ use File::Path ();
 use strict;
 use warnings;
 
+# this seems liek overkill, but it does make testing easier of 
+# retrieval of posts ordered by timestamp -- otherwise we'd have to
+# sleep(1) between creation of posts.
+use Time::HiRes qw/time/;
+
 sub new {
     my ($class, %opts) = @_;
-    bless \%opts, $class;
+    my $self = bless \%opts, $class;
+    $self->_timestamp;
+    $self;
 }
 
 sub new_from_file {
@@ -16,7 +23,15 @@ sub new_from_file {
         or die "Cannot open '$filename' for reading a blog post from it: $!";
     my $data = Mojo::JSON->new->decode(do { local $/; <$fh> });
     $data->{filename} = $filename;
-    bless $data, $class;
+    my $self = bless $data, $class;
+    $self->_timestamp;
+    $self
+}
+
+sub _timestamp {
+    my $self = shift;
+    $self->{creation_date} = $self->{modification_date} = time;
+    $self;
 }
 
 sub title       { $_[0]->{title}        }

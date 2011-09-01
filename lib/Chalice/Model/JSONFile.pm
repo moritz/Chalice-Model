@@ -54,8 +54,6 @@ sub create_post {
         title           => $opts{title},
         body_source     => $opts{body},
         body_format     => $opts{body_format},
-        creation_date   => scalar(localtime),
-        modification_date   => scalar(localtime),
         url             => $url,
         filename        => $self->url_to_filename($url),
     );
@@ -103,15 +101,15 @@ sub post_by_url {
 sub newest_posts {
     # XXX horribly inefficient for such a common operation,
     # desparatly needs some caching
-    my $self  = shift;
-    my $count = shift // 10;
-    my $p     = $self->data_path;
+    my $self       = shift;
+    my $count      = shift // 10;
+    my $p          = $self->data_path;
     my @post_files = grep -e, glob "$p/posts/*/*.json";
-    my @posts  = map Chalice::Model::JSONFile::Post->new_from_file($_),
-                     @post_files;
-    @posts = reverse sort { $a->creation_date <=> $b->create_post }
-                          @posts;
-    my $max_idx = min $#posts, $count - 1;
+    my @posts      = map  Chalice::Model::JSONFile::Post->new_from_file($_),
+                          @post_files;
+    @posts         = sort { $b->creation_date <=> $a->creation_date }
+                           @posts;
+    my $max_idx    = min $#posts, $count - 1;
     return @posts[0..$max_idx];
 }
 
