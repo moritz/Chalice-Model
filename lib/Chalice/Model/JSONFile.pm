@@ -74,8 +74,8 @@ sub validate_url {
         if $url =~ /\.\./;
     die "Absolute URLs are forebidden"
         if $url =~ q{^/};
-    die "Invalid characters in URL (allowed are a-z, A-Z, _, -, /)"
-        if $url !~ q{^[a-zA-Z0-9_/-]+$};
+    die "Invalid characters in URL (allowed are a-z, A-Z, _, -, /, .)"
+        if $url !~ q{^[a-zA-Z0-9_/.-]+$};
 }
 
 sub url_from_title {
