@@ -57,7 +57,9 @@ sub create_post {
         url             => $url,
         filename        => $self->url_to_filename($url),
     );
-    $post_data{author} = $opts{author} if exists $opts{author};
+    for (qw/author creation_date modification_date/) {
+        $post_data{$_} = $opts{$_} if exists $opts{$_};
+    }
     my $post = Chalice::Model::JSONFile::Post->new(
         %post_data
     );

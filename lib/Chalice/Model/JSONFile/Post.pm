@@ -30,7 +30,9 @@ sub new_from_file {
 
 sub _timestamp {
     my $self = shift;
-    $self->{creation_date} = $self->{modification_date} = time;
+    my $ts = time;
+    $self->{creation_date}     //= $ts;
+    $self->{modification_date} //= $ts;
     $self;
 }
 
