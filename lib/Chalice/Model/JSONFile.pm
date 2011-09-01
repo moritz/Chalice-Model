@@ -56,6 +56,7 @@ sub create_post {
         body_format     => $opts{body_format},
         url             => $url,
         filename        => $self->url_to_filename($url),
+        model           => $self,
     );
     for (qw/author creation_date modification_date/) {
         $post_data{$_} = $opts{$_} if exists $opts{$_};

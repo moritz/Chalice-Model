@@ -10,19 +10,24 @@ use warnings;
 # sleep(1) between creation of posts.
 use Time::HiRes qw/time/;
 
+use Scalar::Util qw/weaken/;
+
 sub new {
     my ($class, %opts) = @_;
+    weaken $opts{model};
     my $self = bless \%opts, $class;
     $self->_timestamp;
     $self;
 }
 
 sub new_from_file {
-    my ($class, $filename) = @_;
+    my ($class, $filename, $model) = @_;
     open my $fh, '<', $filename
         or die "Cannot open '$filename' for reading a blog post from it: $!";
     my $data = Mojo::JSON->new->decode(do { local $/; <$fh> });
     $data->{filename} = $filename;
+    $data->{model}    = $model;
+    weaken $data->{model};
     my $self = bless $data, $class;
     $self->_timestamp;
     $self
@@ -47,6 +52,7 @@ sub write {
     my $self = shift;
     my %self_copy = %$self;
     my $filename = delete $self_copy{filename};
+    delete $self_copy{model};
     my $dir = File::Basename::dirname($filename);
     unless (-d $dir) {
         File::Path::mkpath($dir);
@@ -74,6 +80,16 @@ sub body_rendered {
     # TODO: add caching here
     Chalice::Model::Renderer->render($self->body_format, $self->body_source);
 }
+
+sub _index_filename {
+    my $self = shift;
+    $self->data_path
+}
+
+sub _write_index_file {
+    my $self = shift;
+}
+
 
 
 1;
