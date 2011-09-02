@@ -13,7 +13,7 @@ sub new {
     my ($class, %opts) = @_;
     my $config_file = delete $opts{config_file};
     unless (defined $config_file) {
-        die "Option 'config_file' is mandatory in the Chalice::Model::JSONFIle backend";
+        die "Option 'config_file' is mandatory in the Chalice::Model::JSONFIle storage";
     }
     my $conf = do {
         open my $fh, '<', $config_file
@@ -179,7 +179,7 @@ And then access Chalice::Model::JSONFile as
     use Chalice::Model;
     my $config_file = "path/to/newly/made/config.json";
     my $model = Chalice::Model->new(
-        backend     => 'JSONFile',
+        storage     => 'JSONFile',
         config_file => $config_file,
     );
 
@@ -187,7 +187,8 @@ The methods are documented in L<Chalice::Model>.
 
 =head1 DESCRIPTION
 
-This backend stores blog posts and configuration in JSON files. It expects
+This storage backend stores blog posts and configuration in JSON files.
+It expects
 URLs to be of the form C<directory/post-without-any-further-slashes>, and
 supplies the current year as default directory if the URL is not supplied
 (but rather generated from the title).

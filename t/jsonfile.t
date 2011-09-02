@@ -6,7 +6,7 @@ use Chalice::Model;
 
 my $year = (localtime)[5] + 1900;
 my $m = Chalice::Model->new(
-    backend     => 'JSONFile',
+    storage     => 'JSONFile',
     config_file => 't/data/json-file/config.json',
 );
 

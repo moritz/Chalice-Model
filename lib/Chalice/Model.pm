@@ -8,11 +8,11 @@ our $VERSION = '0.01';
 
 sub new {
     my ($class, %opts) = @_;
-    my $backend = delete $opts{backend};
-    die "The 'backend' option is mandatoray!" unless defined $backend;
-    eval "use Chalice::Model::$backend (); 1"
-        or die "Cannot load backend '$backend': $@";
-    "Chalice::Model::$backend"->new(%opts);
+    my $storage = delete $opts{storage};
+    die "The 'storage' option is mandatoray!" unless defined $storage;
+    eval "use Chalice::Model::$storage (); 1"
+        or die "Cannot load storage '$storage': $@";
+    "Chalice::Model::$storage"->new(%opts);
 }
 
 1;
@@ -33,10 +33,10 @@ Version 0.01
     use 5.010; # Chalice::Model needs it anyway
 
     my $model = Chalice::Model->new(
-        backend => 'SQL',
+        storage => 'SQL',
         url_prefix => '/blog/',     # prefix for turning relative
                                     # URLs into absolute URLs
-        # backend specific options go here
+        # storage specific options go here
     );
 
     say $model->title, " " x 4, $model->tagline;
@@ -73,8 +73,8 @@ storage class.
 
 =head2 new
 
-Creates a new Chalice::Model object. In truth it loads the backend
-specified by the C<backend> option, and creates an instance thereof.
+Creates a new Chalice::Model object. In truth it loads the storage
+specified by the C<storage> option, and creates an instance thereof.
 
 =head2 all_posts
 
@@ -125,7 +125,7 @@ make links in RSS feeds more fragile).
 
 The C<2011/why-i-like-perl> part is used internally as the url of the
 individual blog post, which must never start with a slash, and may be
-constrained by the backend. For example file-based backends might
+constrained by the storage. For example file-based storage backends might
 disallow two dots in a row in URLs and special characters
 (for security reasons).
 
