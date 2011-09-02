@@ -101,6 +101,34 @@ for prefix would be C<ab>, C<ab/cd> and C<ab/ef>, but not C<a> or C<ab/e>.
 This method is useful for retrieving posts by category or year, whatever you
 choose to base your URL scheme on.
 
+=head2 create_post
+
+Mandatory options: C<title>, C<body>, C<body_format>
+
+Optional options: C<url>, C<creation_date>, C<modification_date>, C<author>
+
+Creates and returns a new post. C<title> is the title of the post in plain
+text, C<body> is the source of the body of the post, as entered by the user.
+C<body_format> is the name of the format of the body, see
+L<Chalice::Model::Renderer> for details.
+
+
+=head1 URLs
+
+The typical URL of a blog post is something like
+C<http://example.com/blog/2011/why-i-like-perl>.
+
+In this example the
+C<http://example.com/blog/> part should be passed as the C<url_prefix>
+option to C<Chalice::Model->new>. (Just C</blog/> might work too, but would
+make links in RSS feeds more fragile).
+
+The C<2011/why-i-like-perl> part is used internally as the url of the
+individual blog post, which must never start with a slash, and may be
+constrained by the backend. For example file-based backends might
+disallow two dots in a row in URLs and special characters
+(for security reasons).
+
 =head1 AUTHOR
 
 Moritz Lenz, C<< <moritz at faui2k3.org> >>
