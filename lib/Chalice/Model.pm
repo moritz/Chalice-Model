@@ -4,6 +4,21 @@ use 5.010;
 use strict;
 use warnings;
 
+our $VERSION = '0.01';
+
+sub new {
+    my ($class, %opts) = @_;
+    my $backend = delete $opts{backend};
+    die "The 'backend' option is mandatoray!" unless defined $backend;
+    eval "use Chalice::Model::$backend (); 1"
+        or die "Cannot load backend '$backend': $@";
+    "Chalice::Model::$backend"->new(%opts);
+}
+
+1;
+
+__END__
+
 =head1 NAME
 
 Chalice::Model - Data model for a blog system
@@ -11,10 +26,6 @@ Chalice::Model - Data model for a blog system
 =head1 VERSION
 
 Version 0.01
-
-=cut
-
-our $VERSION = '0.01';
 
 
 =head1 SYNOPSIS
@@ -58,16 +69,6 @@ date etc.
 Create a new Chalice::Model object. In truth it loads the backend
 specified by the C<backend> option, and creates an instance thereof.
 
-=cut
-
-sub new {
-    my ($class, %opts) = @_;
-    my $backend = delete $opts{backend};
-    die "The 'backend' option is mandatoray!" unless defined $backend;
-    eval "use Chalice::Model::$backend (); 1"
-        or die "Cannot load backend '$backend': $@";
-    "Chalice::Model::$backend"->new(%opts);
-}
 
 =head1 AUTHOR
 
@@ -126,5 +127,3 @@ See http://dev.perl.org/licenses/ for more information.
 
 
 =cut
-
-1; # End of Chalice::Model
