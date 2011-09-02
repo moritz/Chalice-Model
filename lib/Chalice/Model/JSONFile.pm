@@ -158,3 +158,42 @@ sub write_index_file {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Chalice::Model::JSONFile - a JSON file storage backend for Chalice::Model
+
+=head1 SYNOPSIS
+
+Create a directory for the blog files, and put a file C<config.json> into it
+which looks like this:
+    
+    {
+        "title":    "Your Blog Title",
+        "tagline":  "a second line describing the blog a bit more"
+    }
+
+And then access Chalice::Model::JSONFile as
+
+    use Chalice::Model;
+    my $config_file = "path/to/newly/made/config.json";
+    my $model = Chalice::Model->new(
+        backend     => 'JSONFile',
+        config_file => $config_file,
+    );
+
+The methods are documented in L<Chalice::Model>.
+
+=head1 DESCRIPTION
+
+This backend stores blog posts and configuration in JSON files. It expects
+URLs to be of the form C<directory/post-without-any-further-slashes>, and
+supplies the current year as default directory if the URL is not supplied
+(but rather generated from the title).
+
+If the config file is stored in C<$path/config.json>, a post of URL
+C<foo/bar> is stored in C<$path/posts/foo/bar.json>. An index file is
+generated in C<$path/index.json>.
+
+=cut
