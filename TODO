@@ -1,0 +1,12 @@
+Some plans/ideas for what to do:
+
+General ideas:
+    * caching
+    * more backends
+    * proof of concept frontend
+    * comments, trackbacks
+
+JSONFile backend:
+    * make the index file plain text, one post per line -- should be much
+      faster than JSON
+    * post retrieval by URL
