@@ -7,9 +7,8 @@ General items on the agenda:
     * comments, trackbacks
     * API for updating posts
     * tags
+    * document Renderer
 
 JSONFile backend:
     * make the index file plain text, one post per line -- should be much
-      faster than JSON
-    * updating posts
-    * more docs
+      faster than JSON (conjectural)

@@ -69,6 +69,19 @@ sub write {
     $self;
 }
 
+sub update {
+    my ($self, %opts) = @_;
+    $opts{modification_date} //= time;
+    delete $opts{$_} for qw/model filename/;
+    for (keys %opts) {
+        $self->{$_} = $opts{$_};
+    }
+    $self->write;
+    # just to be on the safe side
+    $self->model->write_index_file;
+    $self;
+}
+
 sub delete {
     my $self = shift;
     my $filename = $self->{filename};

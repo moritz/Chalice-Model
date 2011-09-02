@@ -154,6 +154,18 @@ UNIX timestamp of the last modification date
 
 Returns the title of the post
 
+=head2 update
+
+Options: same as C<create_post>, except that all of them are optional
+in C<update>.
+
+Updates the arguments that are passed along, so for example
+C<$post->update(title => 'new title')> changes the title.
+
+Note that updating the URL is usally a very bad idea, there are no mechanisms
+in place to install redirects, updating internal links to the post etc. 
+See also: L<http://www.w3.org/Provider/Style/URI.html>.
+
 =head2 url
 
 Returns the local URL of the post

@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 20;
+use Test::More tests => 23;
 use lib 'lib';
 use Chalice::Model;
 
@@ -69,3 +69,10 @@ is join(', ', map $_->title, $m->posts_by_url_prefix('b')),
 is join(', ', map $_->title, $m->posts_by_url_prefix('foo')),
     '',
    'posts_by_url_prefix with non-existing prefix';
+
+$post = $m->post_by_url('a/1');
+$post->update(title => 'foo');
+is $post->title, 'foo', 'update worked (in-memory)';
+is $m->post_by_url('a/1')->title, 'foo', 'update worked (from storage)';
+cmp_ok $post->modification_date, '>', $post->creation_date,
+        'modification timestamp updated';
