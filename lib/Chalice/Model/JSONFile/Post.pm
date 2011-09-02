@@ -47,6 +47,7 @@ sub body_source         { $_[0]->{body_source}       }
 sub body_format         { $_[0]->{body_format}       }
 sub creation_date       { $_[0]->{creation_date}     }
 sub modification_date   { $_[0]->{modification_date} }
+sub model               { $_[0]->{model}             }
 
 sub write {
     my $self = shift;
@@ -64,6 +65,7 @@ sub write {
     print  { $fh } "\n";
     close $fh
         or die "Error while closing file '$filename' after writing post: $!";
+    $self->model->write_index_file;
     $self;
 }
 
@@ -71,6 +73,7 @@ sub delete {
     my $self = shift;
     my $filename = $self->{filename};
     unlink $filename or die "Cannot delete '$filename': $!";
+    $self->model->write_index_file;
     $self;
 }
 
@@ -80,16 +83,5 @@ sub body_rendered {
     # TODO: add caching here
     Chalice::Model::Renderer->render($self->body_format, $self->body_source);
 }
-
-sub _index_filename {
-    my $self = shift;
-    $self->data_path
-}
-
-sub _write_index_file {
-    my $self = shift;
-}
-
-
 
 1;

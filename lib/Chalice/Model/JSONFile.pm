@@ -98,22 +98,47 @@ sub post_by_url {
     return unless eval { $self->validate_url($url); 1 };
     my $filename = $self->url_to_filename($url);
     return unless -e $filename;
-    Chalice::Model::JSONFile::Post->new_from_file($filename);
+    Chalice::Model::JSONFile::Post->new_from_file($filename, $self);
 }
 
 sub newest_posts {
-    # XXX horribly inefficient for such a common operation,
-    # desparatly needs some caching
+    my ($self, $count) = @_;
+    $count //= 10;
+    if (open my $fh, '<', $self->_index_filename) {
+        my @posts = @{ $json->decode(do { local $/; <$fh> }) };
+        close $fh;
+        my $max_idx = min $count - 1, $#posts;
+        return map $self->post_by_url($_->{url}), @posts[0..$max_idx];
+    } else {
+        $self->write_index_file;
+        my @posts = $self->all_posts;
+        my $max_idx = min $count - 1, $#posts;
+        return @posts[0..$max_idx];
+    }
+}
+
+sub all_posts {
     my $self       = shift;
-    my $count      = shift // 10;
     my $p          = $self->data_path;
     my @post_files = grep -e, glob "$p/posts/*/*.json";
-    my @posts      = map  Chalice::Model::JSONFile::Post->new_from_file($_),
+    my @posts      = map  Chalice::Model::JSONFile::Post->new_from_file($_, $self),
                           @post_files;
-    @posts         = sort { $b->creation_date <=> $a->creation_date }
-                           @posts;
-    my $max_idx    = min $#posts, $count - 1;
-    return @posts[0..$max_idx];
+    return sort { $b->creation_date <=> $a->creation_date }
+                @posts;
+}
+
+sub _index_filename {
+    shift->data_path . '/index.json';
+}
+
+sub write_index_file {
+    my $self = shift;
+    my @posts = $self->all_posts;
+    @posts = map { { url => $_->url, timestamp => $_->creation_date } } @posts;
+    use autodie;
+    open my $h, '>', $self->_index_filename;
+    print { $h } $json->encode(\@posts);
+    $self;
 }
 
 1;
