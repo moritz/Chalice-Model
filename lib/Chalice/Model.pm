@@ -112,6 +112,51 @@ text, C<body> is the source of the body of the post, as entered by the user.
 C<body_format> is the name of the format of the body, see
 L<Chalice::Model::Renderer> for details.
 
+If no C<url> is given, the backend will generate one for you. C<author> is not
+yet used in any way, simply stored along with the post. See L</URLs> below
+for more notes on URLs.
+
+C<creation_date> and C<modification_date> are UNIX
+timestamps, and will be set automatically unless supplied. Supplying them only
+makes sense for imporint legacy data.
+
+=head1 METHODS in ::Post classes
+
+A C<Chalice::Model::$storage::Post> class provides at least the
+following methods:
+
+=head2 body_format
+
+Returns the source format of the body. See L<Chalice::Model::Renderer> for
+details.
+
+=head2 body_rendered
+
+Returns a HTML string of the rendered body of this post
+
+=head2 body_source
+
+Returns the source of body of the blog post
+
+=head2 creation_date
+
+UNIX timestamp of the creation date
+
+=head2 delete
+
+Delete this post
+
+=head2 modification_date
+
+UNIX timestamp of the last modification date
+
+=head2 title
+
+Returns the title of the post
+
+=head2 url
+
+Returns the local URL of the post
 
 =head1 URLs
 
