@@ -81,6 +81,7 @@ sub validate_url {
 
 sub url_from_title {
     my ($self, $title) = @_;
+    $title = lc $title;
     $title =~ s{[^a-zA-Z0-9_/-]+}{-}g;
     $title =~ s/-{2,}/-/g;
     $title = substr($title, 0, 25);
