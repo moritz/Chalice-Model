@@ -27,7 +27,6 @@ Chalice::Model - Data model for a blog system
 
 Version 0.01
 
-
 =head1 SYNOPSIS
 
     use Chalice::Model;
@@ -64,11 +63,43 @@ date etc.
 
 =head1 METHODS
 
+Method calls are generally of the form
+C<$obj->method(opt1 => $val1, opt2 => $val2)>, sometimes also of the form
+C<$obj->method($argument, opt1 => $val1, ...)>.
+
+If a "post" is mentioned in the documentation below, it refers to
+a C<Chalice::Model::$storage::Post> object, where C<$storage> refers to the
+storage class.
+
 =head2 new
 
-Create a new Chalice::Model object. In truth it loads the backend
+Creates a new Chalice::Model object. In truth it loads the backend
 specified by the C<backend> option, and creates an instance thereof.
 
+=head2 all_posts
+
+Returns a list of all posts, newest (by creation time) first.
+
+=head2 newest_posts
+
+Argument: C<$limit> (default 10)
+
+Returns a list of up to C<$limit> posts, newest (by creation time) first
+
+=head2 posts_by_url_prefix
+
+Arguments: C<$url_prefix>, C<$limit> (optional)
+
+Returns a list of posts with URLs that begin with C<$url_prefix>, newest
+(by creation time) first. If C<$limit> is present, return only up to
+C<$limit> posts, otherwise all matching posts.
+
+Storage backends may decide to only implement that lookup URL parts at slash
+boundaries, so if the URLs C<ab/cd/e> are stored C<ab/ef/g>, valid values
+for prefix would be C<ab>, C<ab/cd> and C<ab/ef>, but not C<a> or C<ab/e>.
+
+This method is useful for retrieving posts by category or year, whatever you
+choose to base your URL scheme on.
 
 =head1 AUTHOR
 
