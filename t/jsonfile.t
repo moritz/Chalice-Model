@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 17;
+use Test::More tests => 20;
 use lib 'lib';
 use Chalice::Model;
 
@@ -14,7 +14,7 @@ isa_ok $m,      'Chalice::Model::JSONFile';
 is $m->title,   'A Test Blog', 'title';
 is $m->tagline, 'Something witty', 'tagline';
 
-unlink glob "t/data/json-file/posts/$year/*";
+$_->delete for $m->all_posts;
 ok !$m->post_by_url("$year/foo-bar"), 'post not there yet';
 my @posts = $m->newest_posts(5);
 is scalar(@posts), 0, 'No posts yet';
@@ -51,3 +51,21 @@ is join(', ', map $_->title, @posts), '3, 2, 1',
 is join(', ', map $_->title, $m->newest_posts(2)), '3, 2',
     'limiting number of posts works';
 
+$_->delete for $m->all_posts;
+my %common = (body => 1, body_format => 'rawhtml');
+$m->create_post(title => '1', url => "a/1", %common);
+$m->create_post(title => '2', url => "b/2", %common);
+$m->create_post(title => '3', url => "b/3", %common);
+$m->create_post(title => '4', url => "a/4", %common);
+
+is join(', ', map $_->title, $m->posts_by_url_prefix('a')),
+    '4, 1',
+   'posts_by_url_prefix a';
+
+is join(', ', map $_->title, $m->posts_by_url_prefix('b')),
+    '3, 2',
+   'posts_by_url_prefix b';
+
+is join(', ', map $_->title, $m->posts_by_url_prefix('foo')),
+    '',
+   'posts_by_url_prefix with non-existing prefix';

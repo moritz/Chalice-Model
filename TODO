@@ -9,4 +9,3 @@ General ideas:
 JSONFile backend:
     * make the index file plain text, one post per line -- should be much
       faster than JSON
-    * post retrieval by URL

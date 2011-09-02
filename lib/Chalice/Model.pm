@@ -39,6 +39,8 @@ our $VERSION = '0.01';
         say $post->body_rendered;
     }
 
+    my @ancient_history = $model->posts_by_url_prefix('2009');
+
 =head1 DESCRIPTION
 
 I<Chalice> is inspired by Blosxom, a light weight Perl-based blogging system.

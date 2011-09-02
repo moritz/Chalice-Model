@@ -117,6 +117,22 @@ sub newest_posts {
     }
 }
 
+sub posts_by_url_prefix {
+    my ($self, $prefix, $limit) = @_;
+    $prefix = quotemeta $prefix;
+    my $index_fn = $self->_index_filename;
+    open my $fh, '<', $index_fn
+        or die "Cannot open index file '$index_fn' for reading: $!";
+    my @all_posts = @{ $json->decode(do { local $/; <$fh> }) };
+    my @posts;
+    for (@all_posts) {
+        next unless $_->{url} =~ /^$prefix/;
+        push @posts, $self->post_by_url($_->{url});
+        last if defined $limit && @posts >= $limit;
+    }
+    return @posts;
+}
+
 sub all_posts {
     my $self       = shift;
     my $p          = $self->data_path;
