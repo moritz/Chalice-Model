@@ -6,6 +6,7 @@ use File::Basename ();
 use Chalice::Model::JSONFile::Post;
 use List::Util qw/min/;
 use 5.010;
+use parent qw/Chalice::Model/;
 
 my $json = Mojo::JSON->new;
 

@@ -15,6 +15,16 @@ sub new {
     "Chalice::Model::$storage"->new(%opts);
 }
 
+sub url_from_title {
+    my ($self, $title) = @_;
+    $title = lc $title;
+    $title =~ s{[^a-zA-Z0-9_/-]+}{-}g;
+    $title =~ s/-{2,}/-/g;
+    $title = substr($title, 0, 25);
+    my $year = (localtime)[5] + 1900;
+    return "$year/$title";
+}
+
 1;
 
 __END__
@@ -247,3 +257,4 @@ See http://dev.perl.org/licenses/ for more information.
 
 
 =cut
+
