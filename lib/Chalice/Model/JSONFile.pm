@@ -69,6 +69,12 @@ sub create_post {
     return $post;
 }
 
+sub delete_all {
+    my $self = shift;
+    $_->delete for $self->all_posts;
+
+}
+
 sub validate_url {
     my ($self, $url) = @_;
     die "URLs containg '..' are forebidden"

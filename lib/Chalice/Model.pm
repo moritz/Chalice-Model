@@ -120,6 +120,10 @@ C<creation_date> and C<modification_date> are UNIX
 timestamps, and will be set automatically unless supplied. Supplying them only
 makes sense for imporint legacy data.
 
+=head2 delete_all
+
+Delete all posts from the storage. (Usually only useful for testing).
+
 =head1 METHODS in ::Post classes
 
 A C<Chalice::Model::$storage::Post> class provides at least the

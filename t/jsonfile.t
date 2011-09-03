@@ -14,7 +14,7 @@ isa_ok $m,      'Chalice::Model::JSONFile';
 is $m->title,   'A Test Blog', 'title';
 is $m->tagline, 'Something witty', 'tagline';
 
-$_->delete for $m->all_posts;
+$m->delete_all;
 ok !$m->post_by_url("$year/foo-bar"), 'post not there yet';
 my @posts = $m->newest_posts(5);
 is scalar(@posts), 0, 'No posts yet';
