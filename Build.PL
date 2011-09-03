@@ -14,6 +14,8 @@ my $build = Module::Build->new(
     requires => {
         perl        => '5.010',
         Mojolicious => '0.040',
+        DBI         => 0,
+        'DBD::SQLite' => 0,
     },
     recommends         => {},
     sign               => 0,
