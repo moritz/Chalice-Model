@@ -87,7 +87,7 @@ sub body_rendered {
     my $self = shift;
     require Chalice::Model::Renderer;
     # TODO: add caching here
-    Chalice::Model::Renderer->render($self->body_format, $self->body_source);
+    Chalice::Model::Renderer->render($self->body_source, format => $self->body_format);
 }
 
 1;

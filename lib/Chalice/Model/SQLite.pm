@@ -126,8 +126,8 @@ sub create_post {
     $opts{modification_date} //= $ts;
     $opts{body_source} = delete $opts{body};
     $opts{body_rendered} //= Chalice::Model::Renderer->render(
-        $opts{body_format},
         $opts{body_source},
+        format => $opts{body_format},
     );
     my @cols = qw/
         url title body_format body_source body_rendered
