@@ -15,3 +15,32 @@ sub render {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Chalice::Model::Renderer::Pod -- render blog posts in Pod format
+
+=head1 SYNOPSIS
+
+    use Chalice::Model::Renderer;
+    my $rendered = Chalice::Model::Renderer->render(
+        'Some B<bold> and I<emphasized> statements',
+        format => 'pod',
+    );
+
+=head1 DESCRIPTION
+
+This module renders blog posts and comments in Pod format by using
+L<Pod::Simple::HTML> (core module since perl 5.9.3).
+
+It automatically adds a minimal Pod header for you, so you can start
+your blog posts with a paragraph (no need for a leading C<=head1 ...> or
+anything).
+
+=head1 METHODS
+
+See L<Chalice::Model::Renderer>
+
+=cut
