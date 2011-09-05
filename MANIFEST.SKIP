@@ -45,4 +45,4 @@ example/online/*
 ^MYMETA\.json$
 
 # some custom
-teaser\.pl
+\.pl$
