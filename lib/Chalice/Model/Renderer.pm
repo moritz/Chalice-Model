@@ -46,4 +46,31 @@ formats. It tries to load C<Chalice::Model::Renderer::$format> (with first
 character of C<$format> converted to upper case) and call the C<< ->render >>
 class method from that module.
 
+=head1 METHODS
+
+=head2 render
+
+Arguments: C<$text>
+
+Options: C<format> (mandatory), C<url_prefix> (optional)
+
+(class method)
+
+Loads the module of name C<Chlaice::Model::Renderer::ucfirst($format)>
+and calls its C<< ->render >> method, passing on the text and all options.
+
+This can be used for rendering blog posts and comments in the format that the
+user supplied.
+
+=head2 render_cost
+
+Options: C<format> (mandatory)
+
+(class method)
+
+Returns a guess of how costly rendering in the given format is. The return
+value should be between 0 (very cheap, like a verbatim copy) and 10 (very
+slow). This method can be used to decide whether the rendered text is
+cached.
+
 =cut

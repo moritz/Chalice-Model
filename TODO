@@ -6,7 +6,6 @@ General items on the agenda:
     * proof of concept frontend
     * comments, trackbacks
     * tags
-    * document Renderer
 
 JSONFile backend:
     * make the index file plain text, one post per line -- should be much
