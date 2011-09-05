@@ -9,4 +9,5 @@ General items on the agenda:
     * Add more magic (automatic linking for example?) to Renderer::Text
     * JSONFile storage: make the index file plain text, one post per
       line -- should be much faster than JSON (conjectural)
+    * make storage backends work under -T, and test it.
     * Markdown renderer
