@@ -6,7 +6,7 @@ General items on the agenda:
     * proof of concept frontend
     * comments, trackbacks
     * tags
-
-JSONFile backend:
-    * make the index file plain text, one post per line -- should be much
-      faster than JSON (conjectural)
+    * Add more magic (automatic linking for example?) to Renderer::Text
+    * JSONFile storage: make the index file plain text, one post per
+      line -- should be much faster than JSON (conjectural)
+    * Markdown renderer
