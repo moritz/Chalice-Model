@@ -3,45 +3,34 @@ Chalice-Model -- generic blog backend for the to-be-written 'Chalice' blog engin
 Chalice is intended to a blog engine inspired by Blosxom, light and
 extensible, though not quite as light as Blosxom.
 
+Goals:
 
-INSTALLATION
+The developer(s) want Chalice to be a good blog engine, in the sense
+that it is
+    * secure
+    * fun to use
+    * easy to install
+    * fast
+    * flexible
 
-To install this module, run the following commands:
+The idea is to start from the bottom up by designing a backend first.
+Since people can never agree on what the best storage format is (for example
+blosxom uses flat files, wordpress uses mysql), the storage is abstracted
+away from the backend API. To avoid costs from an abstraction layer, the
+abstraction is done on the documentation and test level (ie the documentation
+describes how the API of a storage should look like, and the tests excercise
+that; there's no requirement of inheritance or so to conform to that API).
 
-	perl Makefile.PL
-	make
-	make test
-	make install
-
-SUPPORT AND DOCUMENTATION
-
-After installing, you can find documentation for this module with the
-perldoc command.
-
-    perldoc Chalice::Model
-
-You can also look for information at:
-
-    RT, CPAN's request tracker (report bugs here)
-        http://rt.cpan.org/NoAuth/Bugs.html?Dist=Chalice-Model
-
-    AnnoCPAN, Annotated CPAN documentation
-        http://annocpan.org/dist/Chalice-Model
-
-    CPAN Ratings
-        http://cpanratings.perl.org/d/Chalice-Model
-
-    Search CPAN
-        http://search.cpan.org/dist/Chalice-Model/
+Later a frontend will be developed on top of one of the more lightweight
+web frameworks (Dancer or Mojolicious), though everybody is encouraged to
+write alternative frontends (and storage backends, of course).
 
 
-LICENSE AND COPYRIGHT
+Community Participation
 
-Copyright (C) 2011 Moritz Lenz
+You are very welcome to contribute your code and ideas to Chalice. Just submit
+a pull request on github, if I like I'll merge it and give you a commit bit.
 
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
-
-See http://dev.perl.org/licenses/ for more information.
-
+Note that opinions of the form "we should use $x instead of $y" or "we should
+really have feature $z" are much more likely to convince me if they come
+with a patch :-)
