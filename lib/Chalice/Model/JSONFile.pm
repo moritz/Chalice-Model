@@ -77,8 +77,10 @@ sub create_post {
 
 sub delete_all {
     my $self = shift;
-    $_->delete for $self->all_posts;
-
+    my $p = $self->data_path;
+    unlink glob "$p/posts/*/*.json";
+    $self->write_index_file;
+    $self;
 }
 
 my $valid_url = qr{^(?!/)(?!.*?\.\.)([a-zA-Z0-9_/.-]+)\z};
