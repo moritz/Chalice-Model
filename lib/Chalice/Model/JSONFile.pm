@@ -81,6 +81,8 @@ sub delete_all {
 
 }
 
+my $valid_url = qr{^(?!/)(?!.*?\.\.)([a-zA-Z0-9_/.-]+)\z};
+
 sub validate_url {
     my ($self, $url) = @_;
     die "URLs containg '..' are forebidden"
@@ -88,11 +90,13 @@ sub validate_url {
     die "Absolute URLs are forebidden"
         if $url =~ q{^/};
     die "Invalid characters in URL (allowed are a-z, A-Z, _, -, /, .)"
-        if $url !~ q{^[a-zA-Z0-9_/.-]+$};
+        if $url !~ $valid_url;
 }
 
 sub url_to_filename {
     my ($self, $url) = @_;
+    $url =~ $valid_url or die "'$url' is not a valid/secure URL";
+    $url = $1;
     return $self->data_path . '/posts/' . $url . '.json';
 }
 
