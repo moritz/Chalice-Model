@@ -75,10 +75,16 @@ sub create_post {
     return $post;
 }
 
+sub _untaint {
+    $_ =~ /^(.*)\z/s && $1
+}
+
 sub delete_all {
     my $self = shift;
     my $p = $self->data_path;
-    unlink glob "$p/posts/*/*.json";
+    use Scalar::Util qw/tainted/;
+    warn "Tainted? " . tainted($p);
+    unlink map _untaint($_), glob "$p/posts/*/*.json";
     $self->write_index_file;
     $self;
 }
