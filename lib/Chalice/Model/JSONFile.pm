@@ -49,7 +49,12 @@ sub create_post {
         die "$_ is missing in Chalice::Model::JSONFIle->create_post"
             unless exists $opts{$_};
     }
-    my $url = $opts{url} // $self->url_from_title($opts{title});
+    my $url = $opts{url};
+    if (defined $url && $self->post_by_url($url)) {
+        die "A post with URL '$url' already exists, so cannot create"
+          . " another one with that URL"
+    }
+    $url //= $self->url_from_title($opts{title});
     $self->validate_url($url);
     my %post_data = (
         title           => $opts{title},
