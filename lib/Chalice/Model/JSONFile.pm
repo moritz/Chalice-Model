@@ -91,16 +91,6 @@ sub validate_url {
         if $url !~ q{^[a-zA-Z0-9_/.-]+$};
 }
 
-sub url_from_title {
-    my ($self, $title) = @_;
-    $title = lc $title;
-    $title =~ s{[^a-zA-Z0-9_/-]+}{-}g;
-    $title =~ s/-{2,}/-/g;
-    $title = substr($title, 0, 25);
-    my $year = (localtime)[5] + 1900;
-    return "$year/$title";
-}
-
 sub url_to_filename {
     my ($self, $url) = @_;
     return $self->data_path . '/posts/' . $url . '.json';

@@ -22,7 +22,15 @@ sub url_from_title {
     $title =~ s/-{2,}/-/g;
     $title = substr($title, 0, 25);
     my $year = (localtime)[5] + 1900;
-    return "$year/$title";
+    my $url = "$year/$title";
+    if ($self->post_by_url($url)) {
+        # url collision
+        unless ($url =~ s/-([0-9]+)$/'-' . ($1 + 1)/e) {
+            $url = $url . '-1';
+        }
+    } else {
+        return $url;
+    }
 }
 
 1;
