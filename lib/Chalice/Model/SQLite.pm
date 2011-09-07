@@ -139,7 +139,17 @@ sub create_post {
               . join(', ', ('?') x @cols)
               . ')';
     my $sth = $self->{dbh}->prepare_cached($sql);
-    $sth->execute(@opts{@cols});
+    my $success = eval {
+        $sth->execute(@opts{@cols});
+        1;
+    };
+    unless ($success) {
+        if ("$@" =~ /column url is not unique/) {
+            die "Cannot create post with url '$opts{url}', because such an URL already exists";
+        } else {
+            die $@;
+        }
+    }
     Chalice::Model::SQLite::Post->new(model => $self, %opts);
 }
 
